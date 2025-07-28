@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Interview Cheat Sheet - 20 Essential Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .flashcard {
+            perspective: 1000px;
+            height: 400px;
+            cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-y: auto;
+        }
+        .flashcard-front {
+            background-color: #ffffff;
+        }
+        .flashcard-back {
+            background-color: #e5e7eb;
+            transform: rotateY(180deg);
+        }
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .complexity {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+        .code-block {
+            background-color: #f9fafb;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin-top: 1rem;
+        }
+        .instructions {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="text-3xl font-bold mb-4">DSA Interview Cheat Sheet</h1>
+            <p class="text-lg">20 Most Important & Frequently Asked Questions</p>
+            <p class="text-sm mt-2">Click on a card to flip and reveal logic, complexities, and pseudo-code. Good luck with your interview tomorrow!</p>
+        </div>
+        
+        <div class="flashcard-grid">
+            <!-- Card 1: Reverse a Linked List -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">1. Reverse a Linked List</div>
+                        <p>Given the head of a singly linked list, reverse the list and return the reversed list.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use three pointers: prev, curr, next. Initialize prev to null. Traverse the list, set next to curr.next, then curr.next to prev, move prev to curr, curr to next.</p>
+                        <div class="complexity">Time: O(n) | Space: O(1)</div>
+                        <div class="code-block">
+function reverseList(head) {
+  let prev = null;
+  let curr = head;
+  while (curr) {
+    let next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
+  }
+  return prev;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Detect Cycle in Linked List -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">2. Detect Cycle in Linked List</div>
+                        <p>Given head of a linked list, determine if there is a cycle.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use Floyd's Cycle Detection: slow and fast pointers. Slow moves 1 step, fast 2 steps. If they meet, cycle exists.</p>
+                        <div class="complexity">Time: O(n) | Space: O(1)</div>
+                        <div class="code-block">
+function hasCycle(head) {
+  let slow = head, fast = head;
+  while (fast &amp;&amp; fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) return true;
+  }
+  return false;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Merge Two Sorted Linked Lists -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">3. Merge Two Sorted Linked Lists</div>
+                        <p>Merge two sorted linked lists into one sorted list.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use a dummy node. Compare nodes from both lists, attach smaller one, move pointers. Attach remaining list at end.</p>
+                        <div class="complexity">Time: O(n + m) | Space: O(1)</div>
+                        <div class="code-block">
+function mergeTwoLists(l1, l2) {
+  let dummy = { next: null };
+  let tail = dummy;
+  while (l1 &amp;&amp; l2) {
+    if (l1.val &lt; l2.val) {
+      tail.next = l1;
+      l1 = l1.next;
+    } else {
+      tail.next = l2;
+      l2 = l2.next;
+    }
+    tail = tail.next;
+  }
+  tail.next = l1 || l2;
+  return dummy.next;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Find Middle of Linked List -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">4. Find Middle of Linked List</div>
+                        <p>Return the middle node of a singly linked list.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use slow and fast pointers. Fast moves twice as fast; when fast reaches end, slow is at middle.</p>
+                        <div class="complexity">Time: O(n) | Space: O(1)</div>
+                        <div class="code-block">
+function middleNode(head) {
+  let slow = head, fast = head;
+  while (fast &amp;&amp; fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  return slow;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: Binary Search -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">5. Binary Search</div>
+                        <p>Search for a target in a sorted array.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Set low and high pointers. Compute mid, compare with target, adjust pointers until found or exhausted.</p>
+                        <div class="complexity">Time: O(log n) | Space: O(1)</div>
+                        <div class="code-block">
+function binarySearch(arr, target) {
+  let low = 0, high = arr.length - 1;
+  while (low &lt;= high) {
+    let mid = Math.floor((low + high) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] &lt; target) low = mid + 1;
+    else high = mid - 1;
+  }
+  return -1;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Merge Sort -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">6. Merge Sort</div>
+                        <p>Sort an array using merge sort.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Divide array into halves recursively, sort them, then merge sorted halves.</p>
+                        <div class="complexity">Time: O(n log n) | Space: O(n)</div>
+                        <div class="code-block">
+function mergeSort(arr) {
+  if (arr.length &lt;= 1) return arr;
+  let mid = Math.floor(arr.length / 2);
+  let left = mergeSort(arr.slice(0, mid));
+  let right = mergeSort(arr.slice(mid));
+  return merge(left, right);
+}
+function merge(left, right) {
+  let result = [];
+  while (left.length &amp;&amp; right.length) {
+    if (left[0] &lt; right[0]) result.push(left.shift());
+    else result.push(right.shift());
+  }
+  return result.concat(left, right);
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7: Quick Sort -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">7. Quick Sort</div>
+                        <p>Sort an array using quick sort.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Choose pivot, partition array around it, recursively sort subarrays.</p>
+                        <div class="complexity">Time: O(n log n) avg, O(n^2) worst | Space: O(log n)</div>
+                        <div class="code-block">
+function quickSort(arr) {
+  if (arr.length &lt;= 1) return arr;
+  let pivot = arr[arr.length - 1];
+  let left = [], right = [];
+  for (let i = 0; i &lt; arr.length - 1; i++) {
+    if (arr[i] &lt; pivot) left.push(arr[i]);
+    else right.push(arr[i]);
+  }
+  return [...quickSort(left), pivot, ...quickSort(right)];
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8: Find Duplicates in Array -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">8. Find Duplicates in Array</div>
+                        <p>Find all duplicates in an array.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use a set to track seen elements, add to result if already seen.</p>
+                        <div class="complexity">Time: O(n) | Space: O(n)</div>
+                        <div class="code-block">
+function findDuplicates(nums) {
+  let seen = new Set();
+  let duplicates = [];
+  for (let num of nums) {
+    if (seen.has(num)) duplicates.push(num);
+    else seen.add(num);
+  }
+  return duplicates;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 9: Maximum Subarray Sum (Kadane's) -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">9. Maximum Subarray Sum</div>
+                        <p>Find the contiguous subarray with the largest sum.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Kadane's: Track current sum, reset if negative, update max.</p>
+                        <div class="complexity">Time: O(n) | Space: O(1)</div>
+                        <div class="code-block">
+function maxSubArray(nums) {
+  let max = nums[0];
+  let curr = nums[0];
+  for (let i = 1; i &lt; nums.length; i++) {
+    curr = Math.max(nums[i], curr + nums[i]);
+    max = Math.max(max, curr);
+  }
+  return max;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 10: Two Sum -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">10. Two Sum</div>
+                        <p>Find two numbers that add up to a target.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use hash map to store seen numbers and their indices. Check if complement exists.</p>
+                        <div class="complexity">Time: O(n) | Space: O(n)</div>
+                        <div class="code-block">
+function twoSum(nums, target) {
+  let map = new Map();
+  for (let i = 0; i &lt; nums.length; i++) {
+    let complement = target - nums[i];
+    if (map.has(complement)) return [map.get(complement), i];
+    map.set(nums[i], i);
+  }
+  return [];
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 11: Level Order Traversal of Tree -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">11. Level Order Traversal of Binary Tree</div>
+                        <p>Return level order traversal of a binary tree.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use a queue. Process nodes level by level, adding children to queue.</p>
+                        <div class="complexity">Time: O(n) | Space: O(n)</div>
+                        <div class="code-block">
+function levelOrder(root) {
+  if (!root) return [];
+  let result = [];
+  let queue = [root];
+  while (queue.length) {
+    let level = [];
+    let size = queue.length;
+    for (let i = 0; i &lt; size; i++) {
+      let node = queue.shift();
+      level.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    result.push(level);
+  }
+  return result;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 12: Tree Traversals (Inorder, Preorder, Postorder) -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">12. Binary Tree Traversals</div>
+                        <p>Implement inorder, preorder, postorder traversals.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Inorder: left-root-right. Preorder: root-left-right. Postorder: left-right-root. Use recursion.</p>
+                        <div class="complexity">Time: O(n) | Space: O(n)</div>
+                        <div class="code-block">
+function inorder(root) {
+  if (!root) return;
+  inorder(root.left);
+  console.log(root.val);
+  inorder(root.right);
+}
+// Similar for preorder and postorder
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 13: Maximum Depth of Binary Tree -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">13. Maximum Depth of Binary Tree</div>
+                        <p>Find the maximum depth of a binary tree.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Recursively find max depth of left and right subtrees, add 1.</p>
+                        <div class="complexity">Time: O(n) | Space: O(n)</div>
+                        <div class="code-block">
+function maxDepth(root) {
+  if (!root) return 0;
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 14: Diameter of Binary Tree -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">14. Diameter of Binary Tree</div>
+                        <p>Find the diameter (longest path between any two nodes).</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Recursively calculate height, update diameter as max of left + right heights.</p>
+                        <div class="complexity">Time: O(n) | Space: O(n)</div>
+                        <div class="code-block">
+let diameter = 0;
+function diameterOfBinaryTree(root) {
+  height(root);
+  return diameter;
+}
+function height(node) {
+  if (!node) return 0;
+  let left = height(node.left);
+  let right = height(node.right);
+  diameter = Math.max(diameter, left + right);
+  return 1 + Math.max(left, right);
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 15: Graph BFS -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">15. Graph BFS</div>
+                        <p>Perform BFS on a graph.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use a queue and visited set. Enqueue start, process neighbors.</p>
+                        <div class="complexity">Time: O(V + E) | Space: O(V)</div>
+                        <div class="code-block">
+function bfs(graph, start) {
+  let visited = new Set();
+  let queue = [start];
+  visited.add(start);
+  while (queue.length) {
+    let node = queue.shift();
+    console.log(node);
+    for (let neighbor of graph[node]) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 16: Graph DFS -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">16. Graph DFS</div>
+                        <p>Perform DFS on a graph.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use recursion or stack. Visit node, then recurse on unvisited neighbors.</p>
+                        <div class="complexity">Time: O(V + E) | Space: O(V)</div>
+                        <div class="code-block">
+function dfs(graph, start, visited = new Set()) {
+  console.log(start);
+  visited.add(start);
+  for (let neighbor of graph[start]) {
+    if (!visited.has(neighbor)) {
+      dfs(graph, neighbor, visited);
+    }
+  }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 17: Dijkstra's Algorithm -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">17. Dijkstra's Algorithm</div>
+                        <p>Find shortest paths from source in weighted graph.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use priority queue. Update distances to neighbors if shorter path found.</p>
+                        <div class="complexity">Time: O((V + E) log V) | Space: O(V)</div>
+                        <div class="code-block">
+// Pseudo-code with priority queue
+function dijkstra(graph, start) {
+  let distances = {}; // Initialize to Infinity
+  let pq = new PriorityQueue(); // Min-heap
+  pq.add(start, 0);
+  distances[start] = 0;
+  while (!pq.isEmpty()) {
+    let {node, dist} = pq.poll();
+    for (let {neighbor, weight} of graph[node]) {
+      let newDist = dist + weight;
+      if (newDist &lt; distances[neighbor]) {
+        distances[neighbor] = newDist;
+        pq.add(neighbor, newDist);
+      }
+    }
+  }
+  return distances;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 18: Longest Common Subsequence -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">18. Longest Common Subsequence</div>
+                        <p>Find length of LCS of two strings.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>DP table: if chars match, dp[i][j] = dp[i-1][j-1] + 1; else max of left/top.</p>
+                        <div class="complexity">Time: O(m*n) | Space: O(m*n)</div>
+                        <div class="code-block">
+function longestCommonSubsequence(text1, text2) {
+  let dp = Array(text1.length + 1).fill().map(() => Array(text2.length + 1).fill(0));
+  for (let i = 1; i &lt;= text1.length; i++) {
+    for (let j = 1; j &lt;= text2.length; j++) {
+      if (text1[i-1] === text2[j-1]) {
+        dp[i][j] = dp[i-1][j-1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+      }
+    }
+  }
+  return dp[text1.length][text2.length];
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 19: 0/1 Knapsack -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">19. 0/1 Knapsack</div>
+                        <p>Maximize value in knapsack without exceeding weight.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>DP: For each item, decide to include or not, update max value for each weight.</p>
+                        <div class="complexity">Time: O(n*W) | Space: O(W)</div>
+                        <div class="code-block">
+function knapSack(W, weights, values, n) {
+  let dp = Array(W + 1).fill(0);
+  for (let i = 1; i &lt;= n; i++) {
+    for (let w = W; w &gt;= weights[i-1]; w--) {
+      dp[w] = Math.max(dp[w], dp[w - weights[i-1]] + values[i-1]);
+    }
+  }
+  return dp[W];
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 20: Sliding Window Maximum -->
+            <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <div class="question-title">20. Sliding Window Maximum</div>
+                        <p>Find max in each k-sized sliding window.</p>
+                    </div>
+                    <div class="flashcard-back">
+                        <div class="question-title">Logic & Explanation</div>
+                        <p>Use deque to keep indices of useful elements (decreasing order). Remove out-of-window or smaller elements.</p>
+                        <div class="complexity">Time: O(n) | Space: O(k)</div>
+                        <div class="code-block">
+function maxSlidingWindow(nums, k) {
+  let deque = [];
+  let result = [];
+  for (let i = 0; i &lt; nums.length; i++) {
+    while (deque.length &amp;&amp; deque[0] &lt;= i - k) deque.shift();
+    while (deque.length &amp;&amp; nums[deque[deque.length - 1]] &lt; nums[i]) deque.pop();
+    deque.push(i);
+    if (i &gt;= k - 1) result.push(nums[deque[0]]);
+  }
+  return result;
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // No additional JS needed beyond onclick for flipping
+    </script>
+</body>
+</html>
+
